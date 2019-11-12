@@ -1,0 +1,24 @@
+# from https://github.com/abo-abo/swiper/blob/master/.travis.yml
+sudo: false
+dist: bionic
+language: emacs-lisp
+addons:
+  apt:
+    update: true
+
+env:
+  - EVM_EMACS=emacs-24.5-travis
+  - EVM_EMACS=emacs-25.3-travis
+  - EVM_EMACS=emacs-26.3-travis
+  - EVM_EMACS=emacs-git-snapshot-travis
+
+before_install:
+  - git clone https://github.com/rejeep/evm.git $HOME/.evm
+  - export PATH=$HOME/.evm/bin:$PATH
+
+  - evm config path /tmp
+  - evm install $EVM_EMACS --use --skip
+
+script:
+  - emacs --version
+  - emacs --load lsp-haskell.el
