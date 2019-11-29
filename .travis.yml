@@ -1,9 +1,13 @@
 # from https://github.com/abo-abo/swiper/blob/master/.travis.yml
-dist: bionic
+dist: xenial
 language: generic
 addons:
   apt:
     update: true
+    packages:
+      - gnutls-bin
+      - gnutls-dev
+      - gnupg
 
 jobs:
   include:
@@ -11,22 +15,26 @@ jobs:
       name: "Load"
       env: EVM_EMACS=emacs-24.5-travis
       script: &load
+      - rm -rf $HOME/.evm
       - git clone https://github.com/rejeep/evm.git $HOME/.evm
-      - export PATH=$HOME/.evm/bin:$PATH
+      - export PATH=$HOME/.evm/bin:$HOME/.cask/bin:$PATH
       - evm config path /tmp
       - evm install $EVM_EMACS --use --skip
       - evm use $EVM_EMACS
       - emacs --version
-      - emacs --load lsp-haskell.el --funcall lsp-haskell-run-tests
+      - curl -fsSL https://raw.githubusercontent.com/cask/cask/master/go | python
+      # - emacs --load lsp-haskell.el --funcall lsp-haskell-run-tests
+      - travis_retry cask install
+      - cask build
     - stage: load
       name: "Load"
       env: EVM_EMACS=emacs-25.3-travis
-      script: &load
+      script: *load
     - stage: load
       name: "Load"
-      env: EVM_EMACS=emacs-26.3-travis
-      script: &load
+      env: EVM_EMACS=emacs-26.3-travis-linux-xenial
+      script: *load
     - stage: load
       name: "Load"
-      env: EVM_EMACS=emacs-git-snapshot-travis
-      script: &load
+      env: EVM_EMACS=emacs-git-snapshot-travis-linux-xenial
+      script: *load
