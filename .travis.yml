@@ -17,7 +17,7 @@ jobs:
       - evm install $EVM_EMACS --use --skip
       - evm use $EVM_EMACS
       - emacs --version
-      - emacs --load lsp-haskell.el
+      - emacs --load lsp-haskell.el --funcall lsp-haskell-run-tests
     - stage: load
       name: "Load"
       env: EVM_EMACS=emacs-25.3-travis

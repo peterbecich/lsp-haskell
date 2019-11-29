@@ -286,6 +286,9 @@ These are assembled from the customizable variables
   (lsp-haskell-set-completion-snippets :json-false)
   (lsp-haskell--set-configuration))
 
+(defun lsp-haskell-run-tests ()
+  (kill-emacs 1)
+  )
 
 ;; ---------------------------------------------------------------------
 
